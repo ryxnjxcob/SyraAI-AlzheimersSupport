@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SARA • Patient Overview</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../app.js" defer></script>
+
+    <style>
+      body {
+        font-family: "Lexend", sans-serif;
+        background-color: #f6f4ff;
+        color: #3a2e6e;
+      }
+
+      .nav-active {
+        background-color: #e8e2ff;
+        color: #3a2e6e;
+        font-weight: 600;
+      }
+
+      .card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 3px 8px rgba(106, 66, 183, 0.1);
+      }
+
+      .deep {
+        color: #3a2e6e;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside
+        class="w-72 bg-white border-r border-purple-100 flex flex-col justify-between p-5"
+      >
+        <div>
+          <h1 class="text-2xl font-extrabold text-[#3a2e6e] mb-6">SARA 💜</h1>
+          <nav class="flex flex-col gap-3">
+            <a
+              href="Dashboard.html"
+              class="flex items-center gap-3 px-3 py-2 rounded-xl text-[#3a2e6e] hover:bg-[#f0f0ff]"
+              >🏠 Dashboard</a
+            >
+            <a
+              href="Reminders.html"
+              class="flex items-center gap-3 px-3 py-2 rounded-xl text-[#3a2e6e] hover:bg-[#f0f0ff]"
+              >🔔 Reminders</a
+            >
+            <a
+              href="Logs.html"
+              class="flex items-center gap-3 px-3 py-2 rounded-xl nav-active"
+              >📄 Logs</a
+            >
+          </nav>
+        </div>
+
+        <button
+          onclick="logout()"
+          class="mt-6 w-full bg-[#3a2e6e] text-white py-2 rounded-xl hover:bg-purple-800 transition"
+        >
+          Logout
+        </button>
+      </aside>
+
+      <!-- Main Section -->
+      <main class="flex-1 p-10 bg-[#f6f4ff] overflow-y-auto">
+        <h2 class="text-3xl font-bold text-[#3a2e6e] mb-6">
+          Patient Overview
+        </h2>
+
+        <!-- Patient Info -->
+        <div class="card p-6 mb-6">
+          <h3 class="text-xl font-semibold text-[#3a2e6e] mb-3">
+            Patient: Eleanor Harper
+          </h3>
+          <p class="text-gray-600 text-sm mb-2">
+            Last Updated: <span class="font-medium">Today, 10:45 AM</span>
+          </p>
+          <p class="text-gray-500 text-sm">Age: 73 | Alzheimer’s Stage: Mild</p>
+        </div>
+
+        <!-- Comfort Message -->
+        <div class="card p-6 mb-6">
+          <h3 class="text-lg font-semibold text-[#3a2e6e] mb-2">
+            Comforting Message 💜
+          </h3>
+          <p class="text-[#5a506d]">
+            Eleanor, you are loved and safe. Remember, we’re here for you every
+            step of the way. Have a peaceful day 🌸
+          </p>
+        </div>
+
+        <!-- Mood Trend -->
+        <div class="card p-6 mb-6">
+          <h3 class="text-lg font-semibold text-[#3a2e6e] mb-4">
+            Mood Trend (Last 7 Days)
+          </h3>
+
+          <div class="flex flex-col sm:flex-row gap-6 items-center">
+            <div class="flex-1">
+              <p class="text-gray-500 font-medium">Mood Stability</p>
+              <p class="text-4xl font-bold text-[#3a2e6e]">75%</p>
+              <div class="flex gap-2 text-sm">
+                <span class="text-gray-500">Last 7 Days</span>
+                <span class="text-green-600 font-semibold">+10%</span>
+              </div>
+            </div>
+
+            <div class="flex-1">
+              <svg
+                width="100%"
+                height="148"
+                viewBox="-3 0 478 150"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H0V109Z"
+                  fill="url(#lavenderGradient)"
+                ></path>
+                <path
+                  d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25"
+                  stroke="#a78bfa"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                ></path>
+                <defs>
+                  <linearGradient
+                    id="lavenderGradient"
+                    x1="236"
+                    y1="1"
+                    x2="236"
+                    y2="149"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stop-color="#eadaff"></stop>
+                    <stop
+                      offset="1"
+                      stop-color="#f6f4ff"
+                      stop-opacity="0"
+                    ></stop>
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              <div
+                class="flex justify-around text-xs font-medium text-gray-500 mt-2"
+              >
+                <p>Mon</p>
+                <p>Tue</p>
+                <p>Wed</p>
+                <p>Thu</p>
+                <p>Fri</p>
+                <p>Sat</p>
+                <p>Sun</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="card p-6 mb-10">
+          <h3 class="text-lg font-semibold text-[#3a2e6e] mb-3">
+            Last Known Location 📍
+          </h3>
+          <div
+            class="rounded-xl overflow-hidden aspect-video bg-center bg-cover border border-[#c8a8e9]"
+            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDNriT5Ohw6Tp4DALjW0l-fVkSeieTDkZyQmK8ifpOqPHmwBY70FjGJ0LtryTJYoXDhq19dTvAqpM4We_7fFcACTcTHEY2sOx4Iqb1FfnT2NvxWQg7wviT2dvejqcRhkOhpVoxAXSioqxDjfVYFm8q4GdkHEqJNlJClpz9kgepphr6w6zdj7hkn3ElX0MLCaU7laSMrd5nLUqPlDt3aict60D9MGwy1mMZ6YW0wG1GUTGcNZvYeMv7_o0qJ840FWHUTYEebSMW92kU1');"
+          ></div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      function logout() {
+        alert("Logged out successfully 💜");
+        window.location.href = "../index.html";
+      }
+    </script>
+  </body>
+</html>
+

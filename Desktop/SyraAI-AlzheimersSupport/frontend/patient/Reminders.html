@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SARA • My Reminders</title>
+
+  <!-- Fonts + Tailwind -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../app.js" defer></script>
+
+  <!-- 💜 Unified Theme -->
+  <style>
+    :root {
+      --softLavender: #f6f2fa;
+      --lavender: #c8a8e9;
+      --deepLavender: #6a42b7;
+      --gentleGray: #5a506d;
+    }
+
+    body {
+      font-family: "Lexend", sans-serif;
+      background-color: var(--softLavender);
+      color: var(--gentleGray);
+    }
+
+    /* Sidebar - same as map.html */
+    aside {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border-right: 1px solid rgba(255, 255, 255, 0.4);
+      width: 16rem; /* same width as map.html */
+      flex-shrink: 0;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: var(--gentleGray);
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .nav-item:hover {
+      background-color: var(--lavender);
+      color: white;
+    }
+
+    .nav-active {
+      background-color: var(--deepLavender);
+      color: white;
+    }
+
+    .btn {
+      background-color: var(--lavender);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--deepLavender);
+      transform: translateY(-2px);
+    }
+
+    /* Reminder Cards */
+    .card {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+      transition: all 0.25s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(106, 66, 183, 0.15);
+    }
+  </style>
+</head>
+
+<body onload="protectPatientDashboard()">
+  <div class="flex flex-col md:flex-row min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="glass p-6 flex flex-col justify-between">
+      <div class="p-6">
+        <h1 class="text-2xl font-extrabold text-[var(--deepLavender)] mb-8">SARA 💜</h1>
+
+        <nav class="flex flex-col gap-3">
+          <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+          <a href="map.html" class="nav-item">🎯 Map</a>
+          <a href="family.html" class="nav-item">👨‍👩‍👧 Family</a>
+          <a href="Reminders.html" class="nav-item nav-active">💌 Reminders</a>
+        </nav>
+      </div>
+
+      <button onclick="logout()" class="btn w-full mt-6">Logout</button>
+    </aside>
+
+    <!-- 🌼 Main Section -->
+    <main class="flex-grow p-10">
+      <h2 class="text-3xl font-bold text-[var(--deepLavender)] mb-2">Your Reminders 💜</h2>
+      <p class="text-gray-600 mb-10">Stay on track with your daily activities and care routine.</p>
+
+      <!-- 🗓️ Reminder Grid -->
+      <div id="reminderList" class="grid sm:grid-cols-2 md:grid-cols-3 gap-8"></div>
+    </main>
+  </div>
+
+  <script>
+    const reminders = [
+      { text: "Take your morning medicine 💊", time: "8:00 AM" },
+      { text: "Breakfast 🥣", time: "9:00 AM" },
+      { text: "Call your daughter 📞", time: "11:00 AM" },
+      { text: "Lunch 🥗", time: "1:00 PM" },
+      { text: "Evening walk 🚶", time: "6:00 PM" },
+      { text: "Take your night medicine 💊", time: "9:00 PM" }
+    ];
+
+    const list = document.getElementById("reminderList");
+    list.innerHTML = reminders.map(r => `
+      <div class="card p-6 text-center">
+        <p class="text-[var(--deepLavender)] text-lg font-bold mb-1">${r.text}</p>
+        <p class="text-gray-500 text-sm">${r.time}</p>
+      </div>
+    `).join("");
+  </script>
+</body>
+</html>

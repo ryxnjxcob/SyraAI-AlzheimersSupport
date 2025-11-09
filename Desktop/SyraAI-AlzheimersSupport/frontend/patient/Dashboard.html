@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SARA • Patient Dashboard</title>
+
+  <!-- Fonts + Tailwind -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../app.js" defer></script>
+
+  <!-- 💜 Unified Theme -->
+  <style>
+    :root {
+      --softLavender: #f6f2fa;
+      --lavender: #c8a8e9;
+      --deepLavender: #6a42b7;
+      --gentleGray: #5a506d;
+    }
+
+    body {
+      font-family: "Lexend", sans-serif;
+      background-color: var(--softLavender);
+      color: var(--gentleGray);
+    }
+
+    /* Sidebar - same as map.html and reminders.html */
+    aside {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border-right: 1px solid rgba(255, 255, 255, 0.4);
+      width: 16rem;
+      flex-shrink: 0;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: var(--gentleGray);
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .nav-item:hover {
+      background-color: var(--lavender);
+      color: white;
+    }
+
+    .nav-active {
+      background-color: var(--deepLavender);
+      color: white;
+    }
+
+    .btn {
+      background-color: var(--lavender);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--deepLavender);
+      transform: translateY(-2px);
+    }
+
+    .emoji-btn {
+      background-color: #efe6fb;
+      border: none;
+      border-radius: 12px;
+      font-size: 2rem;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .emoji-btn:hover {
+      background-color: var(--lavender);
+      color: white;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+
+<body onload="protectPatientDashboard()">
+  <div class="flex flex-col md:flex-row min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="p-6 flex flex-col justify-between">
+      <div class="p-6">
+        <h1 class="text-2xl font-extrabold text-[var(--deepLavender)] mb-8">SARA 💜</h1>
+
+        <nav class="flex flex-col gap-3">
+          <a href="dashboard.html" class="nav-item nav-active">🏠 Dashboard</a>
+          <a href="map.html" class="nav-item">🎯 Map</a>
+          <a href="family.html" class="nav-item">👨‍👩‍👧 Family</a>
+          <a href="Reminders.html" class="nav-item">💌 Reminders</a>
+        </nav>
+      </div>
+
+      <button onclick="logout()" class="btn w-full mt-6">Logout</button>
+    </aside>
+
+    <!-- 🌼 Main Section -->
+    <main class="flex-grow p-10">
+      <!-- Top Header -->
+      <div class="flex justify-between items-center mb-8">
+        <div>
+          <h1 id="patientName" class="text-3xl font-bold text-[var(--deepLavender)]">Good Morning 💜</h1>
+          <p id="patientEmail" class="text-gray-500 text-sm">Welcome back!</p>
+        </div>
+
+        <button
+          onclick="triggerSOS()"
+          class="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg transition"
+        >
+          🚨 SOS
+        </button>
+      </div>
+
+      <!-- Quote Card -->
+      <div
+        class="rounded-2xl overflow-hidden shadow-md text-white p-6 flex items-end h-[220px] mb-10"
+        style="background-image: linear-gradient(0deg, rgba(0,0,0,0.6), transparent),
+                url('https://images.unsplash.com/photo-1500522144261-ea64433bbe27?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center;"
+      >
+        <h2 class="text-lg font-semibold">You are safe. Your family loves you 💜</h2>
+      </div>
+
+      <!-- Mood Tracker -->
+      <section class="text-center">
+        <h2 class="text-xl font-semibold text-[var(--deepLavender)] mb-4">How are you feeling right now?</h2>
+        <div class="flex justify-center gap-6">
+          <button class="emoji-btn" onclick="sendMood('happy')">🙂</button>
+          <button class="emoji-btn" onclick="sendMood('neutral')">😐</button>
+          <button class="emoji-btn" onclick="sendMood('sad')">🙁</button>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="text-center text-gray-400 text-sm mt-12">
+        ❤️ Built with care by Team SARA
+      </footer>
+    </main>
+  </div>
+
+  <!-- JS -->
+  <script>
+    function protectPatientDashboard() {
+      const role = localStorage.getItem("role");
+      const email = localStorage.getItem("email");
+      if (!role || role !== "patient") {
+        alert("Access denied. Only patients allowed.");
+        window.location.href = "index.html";
+        return;
+      }
+      document.getElementById("patientEmail").textContent = email;
+    }
+
+    async function sendMood(mood) {
+      try {
+        await http("/moods", {
+          method: "POST",
+          body: JSON.stringify({ mood }),
+        });
+        alert(`Mood '${mood}' saved! 💜`);
+      } catch (err) {
+        alert("Failed to send mood: " + err.message);
+      }
+    }
+
+    function triggerSOS() {
+      alert("🚨 SOS alert sent! Help is on the way.");
+    }
+  </script>
+</body>
+</html>
