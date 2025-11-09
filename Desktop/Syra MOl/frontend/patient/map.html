@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SARA • Safe Zone</title>
+
+  <!-- Fonts + Tailwind -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../app.js" defer></script>
+
+  <!-- 💜 Theme -->
+  <style>
+    :root {
+      --softLavender: #f6f2fa;
+      --lavender: #c8a8e9;
+      --deepLavender: #6a42b7;
+      --gentleGray: #5a506d;
+    }
+
+    body {
+      font-family: "Lexend", sans-serif;
+      background-color: var(--softLavender);
+      color: var(--gentleGray);
+    }
+
+    .glass {
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: var(--gentleGray);
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .nav-item:hover {
+      background-color: var(--lavender);
+      color: white;
+    }
+
+    .nav-active {
+      background-color: var(--deepLavender);
+      color: white;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.03);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 4px 12px rgba(106, 66, 183, 0.15);
+    }
+
+    .btn {
+      background-color: var(--lavender);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--deepLavender);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body onload="protectPatientDashboard()">
+  <div class="flex flex-col md:flex-row min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-full md:w-64 glass p-6 flex flex-col justify-between">
+      <div class="p-6">
+        <h1 class="text-2xl font-extrabold text-[var(--deepLavender)] mb-8">SARA 💜</h1>
+
+        <nav class="flex flex-col gap-3">
+          <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+          <a href="map.html" class="nav-item nav-active">🎯 Map</a>
+          <a href="family.html" class="nav-item">👨‍👩‍👧 Family</a>
+          <a href="Reminders.html" class="nav-item">💌 Reminders</a>
+        </nav>
+      </div>
+
+      <button
+        onclick="logout()"
+        class="mt-6 px-4 py-2 w-full rounded-lg bg-purple-200 text-purple-800 font-semibold hover:bg-purple-300 transition"
+      >
+        Logout
+      </button>
+    </aside>
+
+    <!-- 🌼 Main Section -->
+    <main class="flex-grow p-10">
+      <h2 class="text-3xl font-bold text-[var(--deepLavender)] mb-2">You are in your Safe Zone 💜</h2>
+      <p class="text-gray-600 mb-10">Your current location is being tracked securely to ensure your well-being.</p>
+
+      <!-- 📍 Map Container -->
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+
+        <div class="gallery-item bg-white rounded-2xl shadow-md overflow-hidden col-span-2">
+          <div class="h-[400px] bg-cover bg-center">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.054165418646!2d77.5946!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae167e0fcd2f4f%3A0x2f7b42b5f06a5c35!2sBangalore!5e0!3m2!1sen!2sin!4v1694035740313!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+          <div class="p-4 text-center">
+            <p class="font-semibold text-lg text-[var(--deepLavender)]">Current Location</p>
+            <p class="text-sm text-gray-500">Bangalore, India</p>
+          </div>
+        </div>
+
+        <!-- Optional comfort message -->
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden p-6 flex flex-col justify-center text-center gallery-item col-span-2">
+          <h3 class="text-lg font-semibold text-[var(--deepLavender)] mb-2">Feeling Safe 💜</h3>
+          <p class="text-sm text-gray-500 mb-4">If you ever feel lost or anxious, stay calm. Help will reach you soon.</p>
+          <button class="btn mx-auto">Send SOS 🚨</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

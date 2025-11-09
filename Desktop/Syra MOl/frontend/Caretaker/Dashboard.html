@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SARA • Caretaker Dashboard</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../app.js" defer></script>
+
+    <style>
+      body {
+        font-family: Lexend, sans-serif;
+        background-color: #f6f4ff; /* soft lavender */
+      }
+      .nav-active {
+        background-color: #e8e2ff;
+        color: #3a2e6e;
+        font-weight: 600;
+      }
+      .card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 2px 6px rgba(106, 66, 183, 0.1);
+      }
+      .deep {
+        color: #3a2e6e;
+      }
+    </style>
+  </head>
+
+  <body onload="protectAndHydrateDashboard()">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside
+        class="w-72 bg-white border-r border-purple-100 flex flex-col justify-between p-5"
+      >
+        <div>
+          <h1 class="text-2xl font-extrabold text-[#3a2e6e] mb-6">SARA 💜</h1>
+          <nav class="flex flex-col gap-3">
+            <a
+              href="Dashboard.html"
+              class="flex items-center gap-3 px-3 py-2 rounded-xl nav-active"
+              >🏠 Dashboard</a
+            >
+            <a
+              href="Reminders.html"
+              class="flex items-center gap-3 px-3 py-2 rounded-xl text-[#3a2e6e] hover:bg-[#f0f0ff]"
+              >🔔 Reminders</a
+            >
+            <a
+              href="Logs.html"
+              class="flex items-center gap-3 px-3 py-2 rounded-xl text-[#3a2e6e] hover:bg-[#f0f0ff]"
+              >📄 Logs</a
+            >
+          </nav>
+        </div>
+
+        <button
+          onclick="logout()"
+          class="mt-6 w-full bg-[#3a2e6e] text-white py-2 rounded-xl hover:bg-purple-800 transition"
+        >
+          Logout
+        </button>
+      </aside>
+
+      <!-- Main Dashboard -->
+      <main class="flex-1 p-10 bg-[#f6f4ff]">
+        <h2 class="text-3xl font-bold text-[#3a2e6e] mb-4">
+          Caretaker Dashboard
+        </h2>
+        <p class="text-gray-600 mb-8">
+          Overview of patient well-being, reminders, and latest updates.
+        </p>
+
+        <!-- Overview Cards -->
+        <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-6 mb-10">
+          <div class="card p-6 text-center">
+            <p class="text-gray-500 text-sm">Total Patients</p>
+            <p class="text-4xl font-bold text-[#3a2e6e] mt-2">12</p>
+          </div>
+          <div class="card p-6 text-center">
+            <p class="text-gray-500 text-sm">Active Reminders</p>
+            <p class="text-4xl font-bold text-[#3a2e6e] mt-2">8</p>
+          </div>
+          <div class="card p-6 text-center">
+            <p class="text-gray-500 text-sm">Mood Logs Updated</p>
+            <p class="text-4xl font-bold text-[#3a2e6e] mt-2">5</p>
+          </div>
+        </div>
+
+        <!-- Recent Patients -->
+        <section>
+          <h3 class="text-xl font-semibold deep mb-4">
+            Recent Patient Activity
+          </h3>
+
+          <div class="grid lg:grid-cols-2 gap-6">
+            <div class="card p-5 flex items-center gap-5">
+              <div class="flex-1">
+                <h4 class="text-lg font-bold text-[#3a2e6e]">
+                  Sophia Bennett
+                </h4>
+                <p class="text-sm text-gray-600">Last seen: 2 hours ago</p>
+                <p class="text-sm text-gray-500">Mood: Happy 💜</p>
+              </div>
+              <div
+                class="w-28 h-20 bg-center bg-cover rounded-lg"
+                style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuApPrkLBqgDV80mm6mWm2ZDuuLDxw3Z6trk4eQYmQUlR6mdCmP_Uv-0q-RpLC-HjgyjSOBk-megnonE-PiNvWrwRGDXxCmTnqxeDsSgEdvypT1fNBmVvCCX7eSfZ_EV1zrC5lN8PFhAgAQsPiRwC7mRKoMh3z7oy6_9C_-MCU1P5_I2YpPm_uFRbATeLp9rWsIIlscDtthsCQcmWbAOfk0RYOnvjWDUsCGiNHHGyvw-tpsaZNF99y_hEXKz0hi-61gpyEAR-snhv3Gz');"
+              ></div>
+            </div>
+
+            <div class="card p-5 flex items-center gap-5">
+              <div class="flex-1">
+                <h4 class="text-lg font-bold text-[#3a2e6e]">Ethan Carter</h4>
+                <p class="text-sm text-gray-600">Last seen: 1 hour ago</p>
+                <p class="text-sm text-gray-500">Mood: Calm 😊</p>
+              </div>
+              <div
+                class="w-28 h-20 bg-center bg-cover rounded-lg"
+                style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuBGdVOvpVambCWkSzzwa6eRImcaJctn1COPqaNyTuVvsK7KUkMu---fE0JGgAyQZAe3sk9IpKyORzglmSEKlJsbNLXhQXu9BEliZaijH72Y6cgXmaVJl5PeFVfdahcmY7VSixv7ACSxNr6uOxBlZwCtpz17VCURUbrY5KlfAUy_2uBwtWxC7HAK4T5LfZ4g0O86YQr9HAJwmwU01llUAFwvevOO4KfbNz0EogO5O9ocJtr3_oE2Mgr9sObXg9_YyVDwrthbFP0LMlCf');"
+              ></div>
+            </div>
+
+            <div class="card p-5 flex items-center gap-5">
+              <div class="flex-1">
+                <h4 class="text-lg font-bold text-[#3a2e6e]">Olivia Davis</h4>
+                <p class="text-sm text-gray-600">Last seen: 30 mins ago</p>
+                <p class="text-sm text-gray-500">Mood: Sad 🩵</p>
+              </div>
+              <div
+                class="w-28 h-20 bg-center bg-cover rounded-lg"
+                style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuDBPZLfUz-HmH9LbwOToQXN1HIsqWW7YTqG6TdJG7_7LxgydgHHfHe3YvzdlAT6EBAcjDBpR0P1ppFaFtYj8F_fvvzikGVsaCD-4EAaJ7MerB0xQJp7-naEV41RHOwSof_KmvS5MFiRYh-e6NmFQOALVQzGh_T4zcPj5Ntl8txymiso5gcAh-dxPPJbTDZOWN7UwMwKxXxN1HF7gak2vQNx50g949Y5hArkAKfQHIctjqBYfmshxOVhI1D4V_eQvhTvWGHhE_MZSIgJ');"
+              ></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      function protectAndHydrateDashboard() {
+        console.log("Dashboard hydrated ✅");
+      }
+
+      function logout() {
+        alert("Logged out successfully 💜");
+        window.location.href = "../index.html";
+      }
+    </script>
+  </body>
+</html>

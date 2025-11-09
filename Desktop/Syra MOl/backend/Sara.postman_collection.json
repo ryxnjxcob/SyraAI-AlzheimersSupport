@@ -1,0 +1,70 @@
+{
+  "info": {
+    "name": "Sara API",
+    "_postman_id": "sara-api-collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register Caretaker",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/auth/register",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"care@example.com\", \"password\": \"pass12345\", \"name\": \"Care\", \"role\": \"caretaker\"}"
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/auth/login",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "email",
+              "value": "care@example.com"
+            },
+            {
+              "key": "password",
+              "value": "pass12345"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

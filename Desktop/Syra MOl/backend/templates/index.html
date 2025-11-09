@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sara — Caregiver Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --primary:#4A6FA5; --bg:#F7F7F8; }
+    body { background: var(--bg); }
+  </style>
+</head>
+<body class="min-h-screen text-slate-800">
+  <div class="max-w-6xl mx-auto p-6">
+    <header class="mb-6">
+      <h1 class="text-3xl font-semibold text-slate-900">Sara</h1>
+      <p class="text-slate-600">A gentle companion—care, safety, and calm.</p>
+    </header>
+
+    <section id="auth" class="grid md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl p-6 shadow">
+        <h2 class="text-xl font-medium mb-4">Log in</h2>
+        <div class="space-y-3">
+          <input id="email" class="w-full border rounded-lg p-2" placeholder="Email"/>
+          <input id="password" type="password" class="w-full border rounded-lg p-2" placeholder="Password"/>
+          <button onclick="login()" class="px-4 py-2 rounded-xl text-white" style="background:#4A6FA5">Sign in</button>
+        </div>
+        <p id="loginStatus" class="text-sm text-slate-600 mt-2"></p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 shadow">
+        <h2 class="text-xl font-medium mb-4">Quick create caretaker</h2>
+        <div class="space-y-3">
+          <input id="r_name" class="w-full border rounded-lg p-2" placeholder="Name"/>
+          <input id="r_email" class="w-full border rounded-lg p-2" placeholder="Email"/>
+          <input id="r_password" type="password" class="w-full border rounded-lg p-2" placeholder="Password"/>
+          <button onclick="registerCaretaker()" class="px-4 py-2 rounded-xl text-white" style="background:#4A6FA5">Register</button>
+        </div>
+        <p class="text-sm text-slate-600 mt-2">Role is preset to caretaker for this flow.</p>
+      </div>
+    </section>
+
+    <section id="dashboard" class="mt-8 hidden">
+      <div class="bg-white rounded-2xl p-6 shadow mb-6">
+        <h2 class="text-xl font-medium mb-2">Patients</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="border rounded-xl p-4">
+            <h3 class="font-medium">Add Patient</h3>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+              <input id="p_name" class="border rounded p-2 col-span-2" placeholder="Name"/>
+              <input id="p_lat" class="border rounded p-2" placeholder="Safe center lat"/>
+              <input id="p_lng" class="border rounded p-2" placeholder="Safe center lng"/>
+              <input id="p_rad" class="border rounded p-2" placeholder="Safe radius m" value="150"/>
+            </div>
+            <button onclick="createPatient()" class="mt-3 px-4 py-2 rounded-xl text-white" style="background:#4A6FA5">Save</button>
+          </div>
+          <div class="border rounded-xl p-4">
+            <h3 class="font-medium mb-2">Your Patients</h3>
+            <div id="patientsList" class="space-y-2 text-sm"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl p-6 shadow">
+          <h2 class="text-xl font-medium mb-2">Reminders</h2>
+          <div class="grid grid-cols-2 gap-2">
+            <input id="r_patient" class="border rounded p-2 col-span-2" placeholder="Patient ID"/>
+            <input id="r_title" class="border rounded p-2 col-span-2" placeholder="Title (e.g., Medication at 9am)"/>
+            <input id="r_when" class="border rounded p-2 col-span-2" placeholder="When (ISO, e.g., 2025-11-08T04:30:00Z)"/>
+            <input id="r_notes" class="border rounded p-2 col-span-2" placeholder="Notes (optional)"/>
+          </div>
+          <button onclick="createReminder()" class="mt-3 px-4 py-2 rounded-xl text-white" style="background:#4A6FA5">Create</button>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow">
+          <h2 class="text-xl font-medium mb-2">Alerts</h2>
+          <div class="grid grid-cols-2 gap-2">
+            <input id="a_patient" class="border rounded p-2 col-span-2" placeholder="Patient ID"/>
+          </div>
+          <button onclick="loadAlerts()" class="mt-3 px-4 py-2 rounded-xl text-white" style="background:#4A6FA5">Refresh</button>
+          <div id="alertsList" class="mt-3 text-sm space-y-2"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<script>
+const api = window.location.origin;
+let token = null;
+
+async function registerCaretaker(){
+  const name = document.getElementById('r_name').value;
+  const email = document.getElementById('r_email').value;
+  const password = document.getElementById('r_password').value;
+  const res = await fetch(api + '/auth/register', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({name, email, password, role:'caretaker'})
+  });
+  if(res.ok){ alert('Registered! Now log in.'); } else { alert('Registration failed'); }
+}
+
+async function login(){
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const form = new URLSearchParams({email, password});
+  const res = await fetch(api + '/auth/login', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: form });
+  const el = document.getElementById('loginStatus');
+  if(res.ok){
+    const data = await res.json();
+    token = data.access_token;
+    el.textContent = 'Logged in.';
+    document.getElementById('auth').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    listPatients();
+  }else{
+    el.textContent = 'Login failed.';
+  }
+}
+
+async function createPatient(){
+  const name = document.getElementById('p_name').value;
+  const safe_center_lat = parseFloat(document.getElementById('p_lat').value);
+  const safe_center_lng = parseFloat(document.getElementById('p_lng').value);
+  const safe_radius_m = parseFloat(document.getElementById('p_rad').value);
+  const payload = {
+    name,
+    caretaker_id: parseJwt(token).sub,
+    safe_center_lat, safe_center_lng, safe_radius_m
+  };
+  const res = await fetch(api + '/patients/', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+    body: JSON.stringify(payload)
+  });
+  if(res.ok){ alert('Patient created'); listPatients(); } else { alert('Failed to create'); }
+}
+
+async function listPatients(){
+  const res = await fetch(api + '/patients/', { headers:{'Authorization':'Bearer '+token} });
+  const data = res.ok ? await res.json() : [];
+  const box = document.getElementById('patientsList');
+  box.innerHTML = data.map(p => \`<div class="p-2 rounded border">
+    <div class="font-medium">\${p.name}</div>
+    <div>ID: <code>\${p.id}</code></div>
+    <div>Safe radius: \${p.safe_radius_m} m</div>
+  </div>\`).join('');
+}
+
+async function createReminder(){
+  const patient_id = document.getElementById('r_patient').value;
+  const title = document.getElementById('r_title').value;
+  const when = document.getElementById('r_when').value;
+  const notes = document.getElementById('r_notes').value;
+  const res = await fetch(api + '/reminders/', {
+    method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+    body: JSON.stringify({patient_id, title, when, notes})
+  });
+  alert(res.ok ? 'Reminder created' : 'Failed to create');
+}
+
+async function loadAlerts(){
+  const patient_id = document.getElementById('a_patient').value;
+  const res = await fetch(api + '/locations/alerts/' + patient_id, { headers:{'Authorization':'Bearer '+token} });
+  const data = res.ok ? await res.json() : [];
+  const box = document.getElementById('alertsList');
+  box.innerHTML = data.map(a => \`<div class="p-2 rounded border">
+    <div class="font-medium">\${a.type}</div>
+    <div class="text-slate-600 text-sm">\${new Date(a.created_at).toLocaleString()}</div>
+    <div>\${a.message}</div>
+  </div>\`).join('');
+}
+
+function parseJwt (t) {
+  var base64Url = t.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+  return JSON.parse(jsonPayload);
+};
+</script>
+</body>
+</html>

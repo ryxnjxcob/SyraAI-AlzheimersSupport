@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SARA • Caretaker Reminders</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../app.js" defer></script>
+
+    <style>
+      body { font-family: Lexend, sans-serif; background-color: #f6f4ff; }
+      .nav-active { background-color: #e8e2ff; color: #3a2e6e; font-weight: 600; }
+      .card { background: white; border-radius: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    </style>
+  </head>
+
+  <body onload="protectAndHydrateDashboard()">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside class="w-72 bg-white border-r border-purple-100 flex flex-col justify-between p-5">
+        <div>
+          <h1 class="text-2xl font-extrabold text-[#3a2e6e] mb-6">SARA 💜</h1>
+          <nav class="flex flex-col gap-3">
+            <a href="Dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[#3a2e6e] hover:bg-[#f0f0ff]">🏠 Dashboard</a>
+            <a href="Reminders.html" class="flex items-center gap-3 px-3 py-2 rounded-xl nav-active">🔔 Reminders</a>
+            <a href="Logs.html" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[#3a2e6e] hover:bg-[#f0f0ff]">📄 Logs</a>
+          </nav>
+        </div>
+        <button onclick="logout()" class="mt-6 w-full bg-[#3a2e6e] text-white py-2 rounded-xl hover:bg-purple-800 transition">Logout</button>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-10 bg-[#f6f4ff]">
+        <h2 class="text-3xl font-bold text-[#3a2e6e] mb-4">Reminders Dashboard</h2>
+        <p class="text-gray-600 mb-6">Manage medication and activity reminders for all patients</p>
+
+        <!-- Add Reminder -->
+        <div class="card p-6 mb-8">
+          <h3 class="text-lg font-semibold text-[#3a2e6e] mb-3">Add New Reminder</h3>
+          <div class="grid md:grid-cols-3 gap-4">
+            <input id="patientName" class="p-3 rounded-xl border border-gray-200" placeholder="Patient Name" />
+            <input id="reminderText" class="p-3 rounded-xl border border-gray-200" placeholder="Reminder (e.g., Take medication)" />
+            <input id="time" type="time" class="p-3 rounded-xl border border-gray-200" />
+          </div>
+          <button class="mt-4 bg-[#3a2e6e] text-white px-6 py-2 rounded-xl hover:bg-purple-800 transition" onclick="addReminder()">➕ Add</button>
+        </div>
+
+        <!-- Active Reminders -->
+        <div class="grid lg:grid-cols-2 gap-6" id="reminderList"></div>
+      </main>
+    </div>
+
+    <script>
+      let reminders = [
+        { patient: "Sophia Bennett", text: "Morning medication", time: "8:00 AM" },
+        { patient: "Ethan Carter", text: "Evening walk", time: "6:00 PM" },
+      ];
+
+      function renderReminders() {
+        const list = document.getElementById("reminderList");
+        list.innerHTML = reminders.map(r => `
+          <div class="card p-5">
+            <h4 class="text-lg font-bold text-[#3a2e6e]">${r.patient}</h4>
+            <p class="text-sm text-gray-600">${r.text}</p>
+            <p class="text-xs text-gray-400">${r.time}</p>
+          </div>`).join("");
+      }
+
+      function addReminder() {
+        const patient = document.getElementById("patientName").value.trim();
+        const text = document.getElementById("reminderText").value.trim();
+        const time = document.getElementById("time").value;
+        if (!patient || !text || !time) return alert("Please fill all fields!");
+        reminders.push({ patient, text, time });
+        renderReminders();
+      }
+
+      renderReminders();
+    </script>
+  </body>
+</html>
